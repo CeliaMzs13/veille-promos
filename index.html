@@ -1,0 +1,52 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Veille promos</title>
+<style>
+:root{--bg:#faf7f4;--fg:#222;--card:#fff;--mut:#777;--ac:#c2410c;--ok:#15803d;--bd:#e5ded6}
+@media(prefers-color-scheme:dark){:root{--bg:#161412;--fg:#eee;--card:#221f1c;--mut:#999;--ac:#fb923c;--ok:#4ade80;--bd:#3a3530}}
+body{margin:0 auto;max-width:560px;padding:16px;font:16px system-ui,sans-serif;background:var(--bg);color:var(--fg)}
+h1{font-size:22px}.c{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0}
+input,button{font:inherit;padding:10px;border-radius:8px;border:1px solid var(--bd);width:100%;box-sizing:border-box;margin:4px 0;background:var(--bg);color:var(--fg)}
+button{background:var(--ac);color:#fff;border:0;font-weight:600}.row{display:flex;gap:8px}
+.m{color:var(--mut);font-size:14px}.ok{color:var(--ok);font-weight:700}a{color:var(--ac)}
+.x{background:none;color:var(--mut);width:auto;padding:4px 8px;border:1px solid var(--bd)}
+</style></head><body>
+<h1>🛍️ Ma veille promos</h1>
+<div class="c" id="cfg"><b>Réglages (une seule fois)</b>
+<input id="repo" placeholder="ton-pseudo-github/veille">
+<input id="tok" type="password" placeholder="Jeton GitHub (voir le guide)">
+<button onclick="saveCfg()">Enregistrer</button></div>
+<div class="c"><b>Ajouter un article</b>
+<input id="n" placeholder="Nom (ex : robe noire Zara)">
+<input id="u" type="url" placeholder="Lien du produit">
+<div class="row"><input id="s" placeholder="Taille"><input id="p" type="number" inputmode="decimal" placeholder="Prix max €"></div>
+<button onclick="add()">Ajouter</button></div>
+<div id="list"></div><p class="m" id="st"></p>
+<script>
+let items=[],sha=null,cfg={};
+try{cfg=JSON.parse(localStorage.getItem("cfg")||"{}")}catch(e){}
+const $=i=>document.getElementById(i),api=()=>`https://api.github.com/repos/${cfg.repo}/contents/items.json`,
+hd=()=>({Authorization:"Bearer "+cfg.token,Accept:"application/vnd.github+json"});
+function saveCfg(){cfg={repo:$("repo").value.trim(),token:$("tok").value.trim()};
+try{localStorage.setItem("cfg",JSON.stringify(cfg))}catch(e){}load()}
+async function load(){if(!cfg.repo)return;$("cfg").style.display="none";$("st").textContent="Chargement…";
+try{const r=await fetch(api(),{headers:hd()});if(!r.ok)throw 0;const j=await r.json();sha=j.sha;
+items=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))));$("st").textContent="";draw()}
+catch(e){$("st").textContent="Erreur : vérifie le dépôt et le jeton.";$("cfg").style.display=""}}
+async function save(){$("st").textContent="Enregistrement…";
+const b=btoa(unescape(encodeURIComponent(JSON.stringify(items,null,1))));
+try{const r=await fetch(api(),{method:"PUT",headers:hd(),body:JSON.stringify({message:"maj liste",content:b,sha})});
+if(!r.ok)throw 0;sha=(await r.json()).content.sha;$("st").textContent="Enregistré ✓"}
+catch(e){$("st").textContent="Échec de l'enregistrement, recharge la page."}}
+function add(){const n=$("n").value.trim(),u=$("u").value.trim(),p=parseFloat($("p").value);
+if(!n||!u||!p)return;items.push({name:n,url:u,size:$("s").value.trim(),max:p});
+["n","u","s","p"].forEach(i=>$(i).value="");draw();save()}
+function del(i){items.splice(i,1);draw();save()}
+function draw(){const L=$("list");L.textContent="";items.forEach((it,i)=>{const d=document.createElement("div");d.className="c";
+const ok=it.last!=null&&it.last<=it.max;
+const t=document.createElement("div");t.innerHTML='<a target="_blank"></a>';const a=t.firstChild;a.href=it.url;a.textContent=it.name;
+const m=document.createElement("div");m.className="m"+(ok?" ok":"");
+m.textContent=`Taille ${it.size||"-"} · max ${it.max} € · `+(it.last==null?(it.error?"prix illisible":"pas encore vérifié"):`actuel ${it.last} €`+(ok?" 🎉 sous ton prix":""));
+const b=document.createElement("button");b.className="x";b.textContent="Supprimer";b.onclick=()=>del(i);
+d.append(t,m,b);L.append(d)})}
+$("repo").value=cfg.repo||"";load();
+</script></body></html>
