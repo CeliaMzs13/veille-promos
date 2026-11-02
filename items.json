@@ -12,7 +12,7 @@
   "url": "https://www.family3-0.com/products/salomon-xt-6-black-grape-leaf-beach-ball-l49154400-black-grapeleaf-beachbali-ss26?variant=55747517546844&gad_source=1&gad_campaignid=23232460974&gclid=CjwKCAjwgJHXBhBGEiwAHohJq9TVSN79h3NsEW-LfvLj04X-51U8YKxLvFazIBcVVP2w8Hzp82bvoRoCeg4QAvD_BwE",
   "size": "38",
   "max": 100,
-  "last": 86,
+  "last": 86.0,
   "error": false,
   "notified": 86
  },
@@ -20,6 +20,9 @@
   "name": "Lunettes de soleil",
   "url": "https://mondayswimwear.com/collections/sunglasses/products/milano-sunglasses-black",
   "size": "",
-  "max": 110
+  "max": 110,
+  "last": 159.0,
+  "error": false,
+  "notified": null
  }
 ]
