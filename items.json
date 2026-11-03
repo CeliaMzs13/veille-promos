@@ -1,18 +1,10 @@
 [
  {
-  "name": "Salomon XT6 rose",
-  "url": "https://www.zalando.fr/salomon-sportstyle-xt-6-unisex-baskets-basses-mahogany-roseearth-brownflamingo-pink-sa515o001-g12.html",
-  "size": "38",
-  "max": 110,
-  "last": null,
-  "error": true
- },
- {
   "name": "Salomon XT6 Evabenss",
   "url": "https://www.family3-0.com/products/salomon-xt-6-black-grape-leaf-beach-ball-l49154400-black-grapeleaf-beachbali-ss26?variant=55747517546844&gad_source=1&gad_campaignid=23232460974&gclid=CjwKCAjwgJHXBhBGEiwAHohJq9TVSN79h3NsEW-LfvLj04X-51U8YKxLvFazIBcVVP2w8Hzp82bvoRoCeg4QAvD_BwE",
   "size": "38",
   "max": 100,
-  "last": 86.0,
+  "last": 86,
   "error": false,
   "notified": 86
  },
@@ -21,7 +13,7 @@
   "url": "https://mondayswimwear.com/collections/sunglasses/products/milano-sunglasses-black",
   "size": "",
   "max": 110,
-  "last": 159.0,
+  "last": 159,
   "error": false,
   "notified": null
  }
